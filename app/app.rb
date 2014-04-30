@@ -2,7 +2,9 @@ module Asdemo
   class App < Padrino::Application
     register Padrino::Mailer
     register Padrino::Helpers
-
+    set :protection, false
+    set :protect_from_csrf, false
+    set :allow_disabled_csrf, true
     enable :sessions
 		get "/" do
 			redirect "/console/"

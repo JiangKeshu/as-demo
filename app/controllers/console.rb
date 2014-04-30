@@ -20,8 +20,14 @@ Asdemo::App.controllers :console do
   # end
   
   get :index do
-		@name = "jiangks"
-		render 'console/index'
+    render 'console/index'
   end
 
+  post "/" do
+    $elb = params[:elb]
+    $concurrency = params[:concurrency]
+    $count = params[:count]
+    `startab.sh #{$concurrency} #{$count} #{$elb}`
+    redirect '/console'
+  end
 end
