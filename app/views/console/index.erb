@@ -13,24 +13,29 @@
     <![endif]-->
   </head>
   <body>
-		<%= javascript_include_tag 'jquery', 'bootstrap' %>
-		<script type='text/javascript'>
-			$(document).ready(function(){
-			
-			    var progress = setInterval(function() {
-			    var $bar = $('.progress-bar');
-			
-			    if ($bar.width()==400) {
-			        clearInterval(progress);
-			        $('.progress').removeClass('active');
-			    } else {
-			        $bar.width($bar.width()+40);
-			    }
-			    $bar.text($bar.width()/4 + "%");
-			}, 800);
-			
-			});
-		</script>
+    <%= javascript_include_tag 'jquery', 'bootstrap' %>
+    <script type='text/javascript'>
+        $(document).ready(function(){
+          $("#btn_startload").click(function(e){
+            document.getElementById('btn_startload').disabled = true;
+            document.getElementById('btn_stopload').disabled = false;
+            e.preventDefault();
+            var elb = document.getElementById('elb').value;
+            var concurrency = document.getElementById('concurrency').value;
+            $.post("/console/startload", {"elb": elb, "concurrency": concurrency}, function(data, status) {
+            // format result
+            });
+          });
+          $("#btn_stopload").click(function(e){
+            document.getElementById('btn_startload').disabled = false;
+            document.getElementById('btn_stopload').disabled = true;
+            e.preventDefault();
+            $.post("/console/stopload", {}, function(data, status) {
+            // format result
+            });
+          });
+        });
+    </script>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -48,18 +53,19 @@
     <div class="container">
 
       <div class="starter-template">
+
       <div class="col-md-3">
-        <form class="navbar-form navbar-left" role="form" action="/console/" method="post">
+        <form class="navbar-form navbar-left" role="form">
+        <div class="navbar-left">
           <div class="form-group">
-            <input type="text" name="elb" value="<%= $elb %>" placeholder="ELB endpoint" class="form-control">
+            <input type="text" id="elb" value="<%= $elb %>" placeholder="ELB endpoint" class="form-control">
           </div></br></br>
           <div class="form-group">
-            <input type="text" name="concurrency" value="<%= $concurrency %>" placeholder="Concurrency" class="form-control">
+            <input type="text" id="concurrency" value="<%= $concurrency %>" placeholder="Concurrency" class="form-control">
           </div></br></br>
-          <div class="form-group">
-            <input type="text" name="count" value="<%= $count %>" placeholder="Total requests" class="form-control">
-          </div></br></br>
-          <button type="submit" class="btn btn-success">Start</button>
+          <button id="btn_startload" class="btn btn-success">Start</button>
+          <button id="btn_stopload" class="btn btn-success" disabled>Stop</button>
+        </div>
         </form>
       </div>
       <!--

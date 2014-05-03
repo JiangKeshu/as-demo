@@ -23,11 +23,14 @@ Asdemo::App.controllers :console do
     render 'console/index'
   end
 
-  post "/" do
+  post "/startload" do
     $elb = params[:elb]
     $concurrency = params[:concurrency]
-    $count = params[:count]
-    `startab.sh #{$concurrency} #{$count} #{$elb}`
-    redirect '/console'
+    `startload.sh #{$concurrency} #{$elb}`
   end
+
+  post "/stopload" do
+    `stopload.sh`
+  end
+
 end

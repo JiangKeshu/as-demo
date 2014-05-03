@@ -3,8 +3,7 @@ module Asdemo
     register Padrino::Mailer
     register Padrino::Helpers
     set :protection, false
-    set :protect_from_csrf, false
-    set :allow_disabled_csrf, true
+    disable :protect_from_csrf
     enable :sessions
 		get "/" do
 			redirect "/console/"
